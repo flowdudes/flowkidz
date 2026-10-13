@@ -5814,3 +5814,7 @@ figcaption {
   font-style: normal;
   font-display: swap;
 }
+/* Performance */
+/* Decorations with drop-shadow filters (and the floating loops) get their own compositor layer,
+   so animating them moves a cached bitmap instead of re-painting the blur every frame. */
+.hero_sticky-note,.tile-tray,.hero_star2,.hero_paper,.hero_cursor,[fd-float]{will-change:transform}
