@@ -1,0 +1,24 @@
+/index /  301
+/index.html /  301
+/games /pick-a-game 302
+/games/ /pick-a-game 302
+/games/spacing-police /coming-soon 302
+/games/mobile-rescue /coming-soon 302
+/games/guess-the-prompt /coming-soon 302
+/games/robot-chef /coming-soon 302
+/games/link-detective /coming-soon 302
+/games/logo-lab /coming-soon 302
+/games/menu-maze /coming-soon 302
+/games/share-or-not /coming-soon 302
+
+# Old play.flowkidz.com/<game> links -> /play/<game>
+/bug-hunter /play/bug-hunter 301
+/button-builder /play/button-builder 301
+/color-chaos /play/color-chaos 301
+/fix-the-website /play/fix-the-website 301
+/font-friends /play/font-friends 301
+/loop-machine /play/loop-machine 301
+/password-power /play/password-power 301
+/sort-the-bots /play/sort-the-bots 301
+/spot-the-fake /play/spot-the-fake 301
+/teach-the-robot /play/teach-the-robot 301
