@@ -784,7 +784,7 @@ function attemptPlace(tagId,side,zone,pillEl){
     sfx.splat();
     if(pill){pill.style.cssText='';pill.classList.remove('picked');pill.classList.add('placed','snap');
       setTimeout(()=>pill.classList.remove('snap'),320);
-      pill.style.transform='scale(.85)';pill.style.cursor='default';
+      pill.style.transform='scale(.85)';pill.style.cursor='default';pill.tabIndex=-1;
       zone.querySelector('.placedrow').appendChild(pill);}
     const n=Object.keys(S.sorted).length;
     const c=$('#sortcount');if(c)c.textContent=`${n} / 7`;
@@ -912,8 +912,17 @@ function bindKeys(name){
     if(name==='wall1'&&['1','2','3','4'].includes(e.key)){
       const w=document.querySelector(`#canrow .canwrap[data-idx="${e.key}"]`);if(w)w.click();return;}
     if(name==='wall2'){
-      if(S.pickedTag&&(e.key==='w'||e.key==='W')){attemptPlace(S.pickedTag,'warm',document.querySelector('#zone-warm'));}
-      if(S.pickedTag&&(e.key==='c'||e.key==='C')){attemptPlace(S.pickedTag,'cool',document.querySelector('#zone-cool'));}
+      const k=e.key.toLowerCase();
+      if((k!=='w'&&k!=='c')||e.ctrlKey||e.metaKey||e.altKey)return;
+      // the focused tag (Tab to it) or one picked with Enter/click
+      const a=document.activeElement;
+      const id=a&&a.classList.contains('tagpill')&&!a.classList.contains('placed')?a.dataset.id:S.pickedTag;
+      if(!id)return;
+      e.preventDefault();
+      const side=k==='w'?'warm':'cool';
+      attemptPlace(id,side,document.querySelector('#zone-'+side));
+      // a placed pill moves into the zone and loses focus: continue with the next one
+      if(S.sorted[id]){const nx=document.querySelector('#tray .tagpill:not(.placed)');if(nx)nx.focus();}
       return;}
     if(name==='wall3'&&['1','2','3'].includes(e.key)){
       const b=document.querySelectorAll('.optpill')[+e.key-1];if(b)b.click();return;}
