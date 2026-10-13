@@ -978,7 +978,7 @@ margin: 0rem !important;
 <script src="/js/vendor/DrawSVGPlugin.min.js" type="text/javascript"></script>
 <script type="text/javascript">gsap.registerPlugin(ScrollTrigger,SplitText,DrawSVGPlugin);</script>
 <script src="/js/vendor/lenis.min.js"></script>
-<script src="/js/flowkidz.js?v=a6780725"></script>
+<script src="/js/flowkidz.js?v=58c485dd"></script>
 <script>
 (function(){
 const wrap=document.querySelector('.page-wrapper');
@@ -1290,7 +1290,7 @@ if(anim&&hearts.length&&window.ScrollTrigger){
   ScrollTrigger.create({trigger:box,start:'top 88%',once:true,onEnter:()=>{
     G.timeline()
       .to(hearts,{scale:1,y:0,duration:.5,ease:'back.out(3)',stagger:.1})
-      .to(hearts.filter(h=>h.classList.contains('active')),{keyframes:[{scale:1.4,duration:.12,ease:'power2.out'},{scale:1,duration:.55,ease:'elastic.out(1,.4)'}],stagger:.12},'-=.1')
+      .to((a=>a.length?a:{})(hearts.filter(h=>h.classList.contains('active'))),{keyframes:[{scale:1.4,duration:.12,ease:'power2.out'},{scale:1,duration:.55,ease:'elastic.out(1,.4)'}],stagger:.12},'-=.1')
       .add(()=>G.set(hearts,{clearProps:'transform'}));
   }});
 }
