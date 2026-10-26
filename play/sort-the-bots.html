@@ -186,6 +186,8 @@ html,body{height:100%;background:#2E7A2C;overflow:hidden;font-family:'Nunito',sa
 .learnrow{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px;padding:5px 0}
 .learnrow .lb{width:34px;height:34px;border-radius:50%;background:#7ed07e;border:3px solid #2B3A24;flex:none;display:flex;align-items:center;justify-content:center}
 .learnrow .lb svg{display:block}
+.iconbtn{position:relative}
+.iconbtn::after{content:"";position:absolute;inset:-10px}
 </style>
 </head>
 <body>
@@ -389,11 +391,12 @@ function startFruitDrag(e,fid,ctx){e.preventDefault();const f=getFruit(fid);if(!
  const sx=e.clientX,sy=e.clientY;let dragged=false;
  const ghost=document.createElement('div');ghost.id='dragghost';ghost.innerHTML=fruitSVG(f.type);
  const move=ev=>{if(!dragged&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>12){dragged=true;document.body.appendChild(ghost)}if(dragged){ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px'}};
- const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);
+ const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);document.removeEventListener('pointercancel',up);
+  if(ev.type==='pointercancel'){ghost.remove();return}
   if(dragged){ghost.remove();const el=document.elementFromPoint(ev.clientX,ev.clientY);const b=el&&el.closest?el.closest('.basket[data-b]'):null;
    if(b){if(ctx==='day1')placeFruit(fid,b.dataset.b);else placeGreen(fid,b.dataset.b)}}
   else{if(ctx==='day1')tapFruit(fid);else tapGreen(fid)}};
- document.addEventListener('pointermove',move);document.addEventListener('pointerup',up)}
+ document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);document.addEventListener('pointercancel',up)}
 function tapFruit(fid){const f=S.d1.fruits.find(x=>x.id===fid);if(!f)return;
  if(f.placed==='crate'){S.sel=(S.sel===fid?null:fid);sfx.click();renderDay1()}
  else{f.placed='crate';S.sel=null;sfx.click();S.d1.botsy='happy';S.d1.say='Back in the crate! Try again.';renderDay1()}}

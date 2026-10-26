@@ -106,6 +106,8 @@ body.cranking .chip-live .chip-bob{animation:chipbounce .5s ease infinite}
 .dashedslot{border:4px dashed #2BD98E;border-radius:14px;min-height:64px;display:flex;align-items:center;justify-content:center;color:#2BD98E;font-weight:900;font-size:19px;padding:8px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .bulb{width:16px;height:16px;border-radius:50%;background:#F0C868;box-shadow:0 0 10px #F0C868;flex:0 0 auto}
+#bQuit,#bMute,#a2Minus,#a2Plus{position:relative}
+#bQuit::after,#bMute::after,#a2Minus::after,#a2Plus::after{content:"";position:absolute;inset:-10px}
 </style>
 </head>
 <body>
@@ -477,10 +479,11 @@ function makeDraggable(el,kind,cb){if(!el||el._mkDrag)return;el._mkDrag=true;el.
   dragGhost=el.cloneNode(true);dragGhost.classList.add('dragging');dragGhost.style.cssText+=`;position:absolute;left:${(r.left-sr.left)/k}px;top:${(r.top-sr.top)/k}px;width:${r.width/k}px;margin:0;z-index:300`;
   el.style.opacity=.35;
   const mv=ev=>{if(!dragEl)return;const dx=(ev.clientX-sx)/k,dy=(ev.clientY-sy)/k;if(Math.abs(dx)+Math.abs(dy)>6)moved=true;
-   if(moved){if(!dragGhost.parentNode)$('#draglayer').appendChild(dragGhost);dragGhost.style.left=(parseFloat(dragGhost.style.left)+ (ev.movementX||0)/k)+'px';dragGhost.style.top=(parseFloat(dragGhost.style.top)+(ev.movementY||0)/k)+'px'}};
-  const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);
+   if(moved){if(!dragGhost.parentNode)$('#draglayer').appendChild(dragGhost);dragGhost.style.left=((r.left-sr.left)/k+dx)+'px';dragGhost.style.top=((r.top-sr.top)/k+dy)+'px'}};
+  const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);
    if(dragGhost&&dragGhost.parentNode)dragGhost.remove();el.style.opacity='';
-   if(moved&&dragEl){ // drop test against program panels
+   const ok=ev.type==='pointerup';
+   if(ok&&moved&&dragEl){ // drop test against program panels
     const pt={x:(ev.clientX-sr.left)/k,y:(ev.clientY-sr.top)/k};
     const zones=[$('#a2Slot'),$('#a3Slot'),$('#blkSlot'),$('#progPanel'),$('#loopPanel'),$('#prog3')].filter(Boolean);
     let hit=null;for(const z of zones){const zr=z.getBoundingClientRect();const zx=(zr.left-sr.left)/k,zy=(zr.top-sr.top)/k,zw=zr.width/k,zh=zr.height/k;
@@ -488,10 +491,10 @@ function makeDraggable(el,kind,cb){if(!el||el._mkDrag)return;el._mkDrag=true;el.
     if(hit&&(hit.id==='progPanel'||hit.id==='prog3'||hit.id==='blkSlot')){const card=dragKind.split(':')[1];dragCb(card)}
     else if(hit&&(hit.id==='a2Slot'||hit.id==='a3Slot')&&dragKind.startsWith('card:')){dragCb(dragKind.split(':')[1])}
     else if(!moved){}
-   } else if(!moved&&dragEl){ // tap = select/place
+   } else if(ok&&!moved&&dragEl){ // tap = select/place
     const card=dragKind.split(':')[1];dragCb(card)}
    dragEl=null;dragKind=null;dragCb=null;dragGhost=null};
-  addEventListener('pointermove',mv);addEventListener('pointerup',up)})}
+  addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)})}
 /* ---------- keyboard ---------- */
 document.addEventListener('keydown',e=>{
  if(e.target&&e.target.classList&&e.target.classList.contains('chip-live')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();chipGreet(e.target);return}

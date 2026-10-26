@@ -5819,3 +5819,140 @@ figcaption {
 /* Decorations with drop-shadow filters (and the floating loops) get their own compositor layer,
    so animating them moves a cached bitmap instead of re-painting the blur every frame. */
 .hero_sticky-note,.tile-tray,.hero_star2,.hero_paper,.hero_cursor,[fd-float]{will-change:transform}
+
+.featured_bottom {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+.featured_age {
+  color: #8a889c;
+  white-space: nowrap;
+  align-items: center;
+  display: flex;
+}
+
+.fk-age {
+  grid-column-gap: 2px;
+  background-color: #fff;
+  border: 1px solid #ece9f2;
+  border-radius: 102vw;
+  flex: none;
+  align-items: stretch;
+  min-height: 3rem;
+  margin-left: 6px;
+  padding: 2px;
+  display: flex;
+  box-shadow: 0 2px 6px #17142e0d;
+}
+
+.fk-age_opt {
+  color: #17162e;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 102vw;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-bottom: 0;
+  padding: 0 14px;
+  font-family: Nunito Sans, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color .25s ease, color .25s ease;
+  display: flex;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fk-age_opt:has(.fk-age_input:checked) {
+  color: #fff;
+  background-color: #17162e;
+}
+
+.fk-age_opt:has(.fk-age_input:focus-visible) {
+  outline: 3px solid #ffc531;
+  outline-offset: 2px;
+}
+
+.fk-age_input {
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  position: absolute;
+  inset: 0%;
+}
+
+.fk-age_label {
+  pointer-events: none;
+}
+
+.hero_age {
+  color: var(--base-color-brand--purple);
+  letter-spacing: .2px;
+  font-family: Nunito Sans, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.prefooter_age {
+  color: #17162e;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 992px) {
+  .featured_radios {
+    flex: none;
+  }
+
+  .featured_search {
+    flex: 1 1 140px;
+    min-width: 140px;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1269px) {
+  .featured_filters-top {
+    grid-column-gap: 10px;
+    grid-row-gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .featured_radios {
+    display: contents;
+  }
+
+  .fk-age {
+    margin-left: 0;
+  }
+
+  .featured_search {
+    flex: none;
+    width: 260px;
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .fk-age {
+    grid-column: 1 / -1;
+    margin-left: 0;
+  }
+
+  .fk-age_opt {
+    flex: 1;
+  }
+}
+
+.footer_badge {
+  margin-top: 8px;
+  line-height: 0;
+}
+
+.footer_badge a {
+  display: inline-block;
+}

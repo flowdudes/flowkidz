@@ -108,7 +108,7 @@ h1,h2,.snig{font-family:'Sniglet',cursive;font-weight:800}
 .howcard p{font-size:17px;color:#7A6A58;font-weight:800}
 #s-how .btn{margin-top:26px;z-index:2}
 /* word tile */
-.wtile{display:inline-flex;align-items:center;justify-content:center;min-width:76px;min-height:56px;padding:10px 22px;border-radius:14px;font-size:22px;font-weight:900;color:#fff;cursor:pointer;border:4px solid rgba(0,0,0,.14);box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .1s}
+.wtile{touch-action:none;display:inline-flex;align-items:center;justify-content:center;min-width:76px;min-height:56px;padding:10px 22px;border-radius:14px;font-size:22px;font-weight:900;color:#fff;cursor:pointer;border:4px solid rgba(0,0,0,.14);box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .1s}
 .wtile:active{transform:scale(.94)}
 .wtile.picked{outline:5px solid var(--plum);transform:scale(1.06)}
 .wtile.dim{opacity:.35;pointer-events:none}
@@ -213,6 +213,8 @@ h1,h2,.snig{font-family:'Sniglet',cursive;font-weight:800}
 @keyframes btilt{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
 @media (prefers-reduced-motion:reduce){.botsy,.botsy.bwave,.botsy.btilt{animation:none}.botsy:hover svg{transform:none}}
 #ghost{position:fixed;z-index:999;pointer-events:none;transform:translate(-50%,-60%) scale(1.08);display:none}
+.xbtn,.hbtn{position:relative}
+.xbtn::after,.hbtn::after{content:"";position:absolute;inset:-10px}
 </style>
 </head>
 <body>
@@ -507,10 +509,10 @@ function bindTiles(container,tiles,onPick){
 }
 function startDrag(w,e,onPick){dragEl=w;const t=tiles0(w);ghost.innerHTML='<span class="wtile" style="background:'+w.style.background+'">'+w.dataset.t+'</span>';ghost.style.display='block';moveGhost(e);
  const mv=ev=>moveGhost(ev);
- const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);ghost.style.display='none';
-  const s=getSlotAt(ev.clientX,ev.clientY);if(s&&s.dataset.slot===w.dataset.slot){onPick(w.dataset.t,w.dataset.slot)}
+ const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);ghost.style.display='none';
+  const s=ev.type==='pointerup'&&getSlotAt(ev.clientX,ev.clientY);if(s&&s.dataset.slot===w.dataset.slot){onPick(w.dataset.t,w.dataset.slot)}
   dragEl=null};
- addEventListener('pointermove',mv);addEventListener('pointerup',up)}
+ addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)}
 function tiles0(w){return {t:w.dataset.t}}
 function moveGhost(e){ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px'}
 function getSlotAt(x,y){const els=document.elementsFromPoint(x,y);return els.find(n=>n.classList&&n.classList.contains('slot'))||null}

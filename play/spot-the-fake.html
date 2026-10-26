@@ -86,6 +86,8 @@ button:focus-visible{outline:4px solid #FFD84D;outline-offset:2px}
 .readbtn{width:56px;height:56px;border-radius:50%;background:#2A2A36;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 0 #14141f;flex:0 0 auto;border:0;cursor:pointer;vertical-align:middle}
 .readbtn:active{transform:translateY(2px);box-shadow:none}
 .saybtn:active{transform:translateY(2px);box-shadow:none}
+#tb-quit,#tb-mute{position:relative}
+#tb-quit::after,#tb-mute::after{content:"";position:absolute;inset:-10px}
 </style>
 </head>
 <body>
@@ -365,13 +367,14 @@ function enableStampDrag(tool){
      if(Math.abs(dx)+Math.abs(dy)>10)dragG.moved=true;
      const r=stage.getBoundingClientRect();const s=r.width/1200;
      dragG.el.style.left=((ev.clientX-r.left)/s)+'px';dragG.el.style.top=((ev.clientY-r.top)/s)+'px'};
-   const up=ev=>{removeEventListener('pointermove',move);removeEventListener('pointerup',up);
+   const up=ev=>{removeEventListener('pointermove',move);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);
      if(!dragG)return;const d=dragG;dragG=null;d.el.remove();
+     if(ev.type==='pointercancel')return;
      if(d.moved){const el=document.elementFromPoint(ev.clientX,ev.clientY);
        const card=el&&el.closest?el.closest('.mcard,.scard'):null;
        if(card){if(card.classList.contains('mcard'))stampMorning(card,d.kind);else stampEvening(card)}else{sfx.click()}
      }else{pickStamp(d.kind,d.tool)}};
-   addEventListener('pointermove',move);addEventListener('pointerup',up);
+   addEventListener('pointermove',move);addEventListener('pointerup',up);addEventListener('pointercancel',up);
  });
 }
 function stampMorning(card,kind){
@@ -482,7 +485,7 @@ function buildNoon(){
  ph.onclick=e=>{if(e.target.closest('.hotbtn'))return;wrongTap(e)};
  // magnifier follows pointer
  const mag=document.createElement('div');mag.id='noon-mag';mag.style.cssText='position:absolute;z-index:6;pointer-events:none;display:none;transform:translate(-50%,-50%)';mag.innerHTML=magSVG(90);ph.appendChild(mag);
- ph.onpointermove=e=>{const r=ph.getBoundingClientRect();mag.style.display='block';mag.style.left=(e.clientX-r.left)+'px';mag.style.top=(e.clientY-r.top)+'px'};
+ ph.onpointermove=e=>{if(e.pointerType==='touch')return;const r=ph.getBoundingClientRect(),k=r.width/ph.offsetWidth||1;mag.style.display='block';mag.style.left=(e.clientX-r.left)/k+'px';mag.style.top=(e.clientY-r.top)/k+'px'};
  ph.onpointerleave=()=>mag.style.display='none';
  $('#noon-hint').textContent='Tap the strange things in the photo';
 }
@@ -628,7 +631,7 @@ function showWin(){
  show('win');
 }
 /* extra css for held stamps */
-const st2=document.createElement('style');st2.textContent=`.stamp-tool{border-radius:12px;transition:transform .15s ease;cursor:pointer}.stamp-tool:hover{transform:translateY(-6px)}.stamp-tool:hover svg{filter:drop-shadow(0 10px 10px rgba(0,0,0,.35))}.stamp-tool.held{outline:4px solid #FFD84D;transform:scale(1.06) rotate(-4deg)}.stamp-tool.held svg{filter:drop-shadow(0 6px 8px rgba(0,0,0,.4))}`;document.head.appendChild(st2);
+const st2=document.createElement('style');st2.textContent=`.stamp-tool{border-radius:12px;transition:transform .15s ease;cursor:pointer;touch-action:none}.stamp-tool:hover{transform:translateY(-6px)}.stamp-tool:hover svg{filter:drop-shadow(0 10px 10px rgba(0,0,0,.35))}.stamp-tool.held{outline:4px solid #FFD84D;transform:scale(1.06) rotate(-4deg)}.stamp-tool.held svg{filter:drop-shadow(0 6px 8px rgba(0,0,0,.4))}`;document.head.appendChild(st2);
 const st3=document.createElement('style');st3.textContent=`
 /* title newspaper sway */
 .news-sway{transform:rotate(-2deg);transform-origin:260px 7px;animation:newsway 5s ease-in-out infinite}
