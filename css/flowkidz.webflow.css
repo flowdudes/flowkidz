@@ -5957,6 +5957,15 @@ figcaption {
   display: inline-block;
 }
 
+/* Hidden until the CodeHype listing is approved: stays in the HTML, but takes no space and can't be seen, clicked or tabbed to.
+   Delete this rule to show it again. */
+.footer_badge {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* Feedback link + modal (js/feedback.js) */
 .vote_feedback {
   color: var(--base-color-brand--purple);
