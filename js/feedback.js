@@ -2,7 +2,7 @@
    Posts to /api/feedback (functions/api/feedback.js) with a Turnstile token. */
 (() => {
   // Cloudflare Turnstile site key (public). Localhost uses Cloudflare's always-pass test key.
-  const SITE_KEY = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "1x00000000000000000000AA" : "TURNSTILE_SITE_KEY";
+  const SITE_KEY = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "1x00000000000000000000AA" : "0x4AAAAAAFuZackiHoVuZ2-B";
   const GAMES = ["Bug Hunter", "Button Builder", "Color Chaos", "Fix the Website", "Font Friends", "Loop Machine", "Password Power", "Sort the Bots", "Spot the Fake", "Teach the Robot"];
   const SOON = ["Spacing Police", "Mobile Rescue", "Guess the Prompt", "Robot Chef", "Link Detective", "Logo Lab", "Menu Maze", "Share or Not?"];
   const G = window.gsap;
